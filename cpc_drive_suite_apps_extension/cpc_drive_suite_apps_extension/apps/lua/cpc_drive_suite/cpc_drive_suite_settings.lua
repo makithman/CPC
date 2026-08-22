@@ -1,6 +1,7 @@
 -- CPC Drive Suite — settings, defaults and migrations
 local DEFAULTS = {
   suiteEnabled = true,
+  motionUpdateFps = 120,
 
   -- Adaptive clutch.
   clutchEnabled = true,

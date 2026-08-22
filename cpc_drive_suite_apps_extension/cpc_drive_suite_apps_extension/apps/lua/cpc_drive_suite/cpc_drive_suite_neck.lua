@@ -31,6 +31,7 @@ return function(__CPC)
     suiteEnabled = ac.StructItem.boolean(),
     neckEnabled = ac.StructItem.boolean(),
     neckDynamicMovement = ac.StructItem.boolean(),
+    motionUpdateFps = ac.StructItem.float(),
     neckOverallSpeed = ac.StructItem.float(),
     neckGForceAtFull = ac.StructItem.float(),
     neckEffectSpeedCap = ac.StructItem.float(),
@@ -176,6 +177,7 @@ return function(__CPC)
     neckLink.suiteEnabled = settings.suiteEnabled
     neckLink.neckEnabled = settings.neckEnabled
     neckLink.neckDynamicMovement = settings.neckDynamicMovement
+    neckLink.motionUpdateFps = Math.clamp(Math.finiteNumber(settings.motionUpdateFps, 120), 30, 280)
     neckLink.neckOverallSpeed = settings.neckOverallSpeed
     neckLink.neckGForceAtFull = settings.neckGForceAtFull
     neckLink.neckEffectSpeedCap = settings.neckEffectSpeedCap

@@ -19,6 +19,7 @@ local link = ac.connect({
   suiteEnabled = ac.StructItem.boolean(),
   neckEnabled = ac.StructItem.boolean(),
   neckDynamicMovement = ac.StructItem.boolean(),
+  motionUpdateFps = ac.StructItem.float(),
   neckOverallSpeed = ac.StructItem.float(),
   neckGForceAtFull = ac.StructItem.float(),
   neckEffectSpeedCap = ac.StructItem.float(),
@@ -102,6 +103,10 @@ local state = {
   lastYawRate = 0,
   rollShakePhase = 0,
   ovalPhase = 0,
+  motionUpdateAccumulator = 0,
+  effectStrength = 0,
+  outputX = 0, outputY = 0, outputZ = 0,
+  outputYaw = 0, outputPitch = 0, outputRoll = 0,
   ready = false
 }
 
@@ -125,6 +130,20 @@ end
 local function smooth(current, target, speed, dt)
   local alpha = 1 - math.exp(-math.max(finite(speed, 1), 0.01) * math.max(dt, 0))
   return current + (target - current) * alpha
+end
+
+local function motionDelta(dt)
+  local fps = clamp(finite(link.motionUpdateFps, 120), 30, 280)
+  local step = 1 / fps
+  if dt >= step then
+    state.motionUpdateAccumulator = 0
+    return dt
+  end
+  state.motionUpdateAccumulator = math.min(state.motionUpdateAccumulator + dt, 0.05)
+  if state.motionUpdateAccumulator < step then return 0 end
+  local elapsed = state.motionUpdateAccumulator
+  state.motionUpdateAccumulator = 0
+  return elapsed
 end
 
 local function speedBlend(speedKmh)
@@ -155,6 +174,10 @@ local function clearOutputs(dt)
   state.hiddenRoll = smooth(state.hiddenRoll, 0, s, dt)
   state.rollShakePhase = 0
   state.ovalPhase = 0
+  state.motionUpdateAccumulator = 0
+  state.effectStrength = 0
+  state.outputX, state.outputY, state.outputZ = 0, 0, 0
+  state.outputYaw, state.outputPitch, state.outputRoll = 0, 0, 0
 end
 
 local function publish(effectStrength, x, y, z, yaw, pitch, roll)
@@ -189,6 +212,9 @@ function script.update(dt, mode, turnMix)
     return
   end
 
+  local motionDt = motionDelta(dt)
+  if motionDt > 0 then
+    dt = motionDt
   local overall = clamp(link.neckOverallSpeed, 0.1, 3)
   local gAtFull = math.max(math.abs(finite(link.neckGForceAtFull, 1.5)), 0.1)
   local speedKmh = math.abs(finite(car.speedMs, 0) * 3.6)
@@ -308,15 +334,20 @@ function script.update(dt, mode, turnMix)
   outYaw = mixYaw + mixRoll * finite(link.neckMixRollToYaw, 0)
   outRoll = mixRoll + mixYaw * finite(link.neckMixYawToRoll, 0)
 
-  neck.position:addScaled(car.side, outX)
-  neck.position:addScaled(car.up, outY)
-  neck.position:addScaled(car.look, outZ)
-  neck.look:addScaled(car.side, math.radians(outYaw) * turnMix)
-  neck.up:addScaled(car.side, math.radians(outRoll))
-
-  publish(strength, outX, outY, outZ, outYaw, outPitch, outRoll)
-
+  state.effectStrength = strength
+  state.outputX, state.outputY, state.outputZ = outX, outY, outZ
+  state.outputYaw, state.outputPitch, state.outputRoll = outYaw, outPitch, outRoll
   state.lastAccelX, state.lastAccelY, state.lastAccelZ = ax, ay, az
   state.lastYawRate = yawRate
   state.ready = true
+  end
+
+  neck.position:addScaled(car.side, state.outputX)
+  neck.position:addScaled(car.up, state.outputY)
+  neck.position:addScaled(car.look, state.outputZ)
+  neck.look:addScaled(car.side, math.radians(state.outputYaw) * turnMix)
+  neck.up:addScaled(car.side, math.radians(state.outputRoll))
+
+  publish(state.effectStrength, state.outputX, state.outputY, state.outputZ,
+    state.outputYaw, state.outputPitch, state.outputRoll)
 end

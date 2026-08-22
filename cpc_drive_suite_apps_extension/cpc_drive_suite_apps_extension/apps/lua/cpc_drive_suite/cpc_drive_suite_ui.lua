@@ -117,11 +117,91 @@ return function(__CPC)
     __CPC.toggle(label, key, 'Invert this movement channel without changing its amount or response speed.')
   end
 
+  function __CPC.pushSliderStyle()
+    local accent = __CPC.accentColor()
+    ui.pushStyleColor(ui.StyleColor.FrameBg, rgbm(accent.r, accent.g, accent.b, 0.22))
+    ui.pushStyleColor(ui.StyleColor.FrameBgHovered, rgbm(accent.r, accent.g, accent.b, 0.36))
+    ui.pushStyleColor(ui.StyleColor.FrameBgActive, rgbm(accent.r, accent.g, accent.b, 0.48))
+    ui.pushStyleColor(ui.StyleColor.SliderGrab, rgbm(accent.r, accent.g, accent.b, 0.96))
+    ui.pushStyleColor(ui.StyleColor.SliderGrabActive, rgbm(accent.r, accent.g, accent.b, 1.00))
+    ui.pushStyleVar(ui.StyleVar.FramePadding, vec2(0, 2))
+    ui.pushStyleVar(ui.StyleVar.FrameRounding, 12)
+    ui.pushStyleVar(ui.StyleVar.GrabRounding, 12)
+    ui.pushStyleVar(ui.StyleVar.GrabMinSize, 14)
+  end
+
+  function __CPC.popSliderStyle()
+    ui.popStyleVar(4)
+    ui.popStyleColor(5)
+  end
+
+  function __CPC.beginCenteredSlider()
+    local available = ui.availableSpaceX()
+    local width = math.min(360, math.max(180, available * 0.78))
+    local cursor = ui.getCursor()
+    ui.setCursor(vec2(cursor.x + math.max(0, (available - width) * 0.5), cursor.y))
+    ui.pushItemWidth(width)
+  end
+
+  function __CPC.endCenteredSlider()
+    ui.popItemWidth()
+  end
+
+  function __CPC.drawCenteredSliderLabel(label, key)
+    local marker, color = __CPC.settingIndicator(key)
+    if marker == '[*]' then
+      color = rgbm(color.r, color.g, color.b, __CPC.uiPulse(4.2, 0.55))
+    end
+    local available = ui.availableSpaceX()
+    local width = math.min(360, math.max(180, available * 0.78))
+    local cursor = ui.getCursor()
+    local sliderX = cursor.x + math.max(0, (available - width) * 0.5)
+    ui.drawText(marker, vec2(sliderX, cursor.y + 2), color)
+    ui.pushDWriteFont('@System;Weight=Bold;Stretch=Condensed')
+    ui.dwriteDrawTextClipped(label, 11, cursor, vec2(cursor.x + available, cursor.y + 18),
+      ui.Alignment.Center, ui.Alignment.Center, false, __CPC.Theme.COLOR_TEXT)
+    ui.popDWriteFont()
+    ui.dummy(vec2(available, 18))
+  end
+
+  function __CPC.poseNudgeButton(label, id, key, offset, minimum, maximum, tooltip)
+    local accent = __CPC.accentColor()
+    ui.pushStyleColor(ui.StyleColor.Button, rgbm(accent.r, accent.g, accent.b, 0.16))
+    ui.pushStyleColor(ui.StyleColor.ButtonHovered, rgbm(accent.r, accent.g, accent.b, 0.38))
+    ui.pushStyleColor(ui.StyleColor.ButtonActive, rgbm(accent.r, accent.g, accent.b, 0.62))
+    if ui.button(label .. '##poseNudge:' .. id, vec2(30, 30)) then
+      __CPC.settings[key] = __CPC.Math.clamp((__CPC.settings[key] or 0) + offset, minimum, maximum)
+    end
+    if ui.itemHovered() then ui.setTooltip(tooltip) end
+    ui.popStyleColor(3)
+  end
+
+  function __CPC.drawCameraPoseNudgePad()
+    local size, gap = 30, 4
+    ui.textDisabled('QUICK X / Y POSITION')
+    ui.dummy(vec2(size + gap, size))
+    ui.sameLine(0, gap)
+    __CPC.poseNudgeButton('^', 'up', 'throttleStartY', 0.01, -0.30, 0.30, 'Move camera up 10 mm.')
+
+    __CPC.poseNudgeButton('<', 'left', 'throttleStartX', -0.01, -0.30, 0.30, 'Move camera left 10 mm.')
+    ui.sameLine(0, gap)
+    ui.dummy(vec2(size, size))
+    ui.sameLine(0, gap)
+    __CPC.poseNudgeButton('>', 'right', 'throttleStartX', 0.01, -0.30, 0.30, 'Move camera right 10 mm.')
+
+    ui.dummy(vec2(size + gap, size))
+    ui.sameLine(0, gap)
+    __CPC.poseNudgeButton('v', 'down', 'throttleStartY', -0.01, -0.30, 0.30, 'Move camera down 10 mm.')
+  end
+
   function __CPC.slider(label, key, minimum, maximum, format, tooltip)
-    __CPC.drawSettingIndicator(key)
-    ui.textWrapped(label)
+    __CPC.drawCenteredSliderLabel(label, key)
+    __CPC.pushSliderStyle()
+    __CPC.beginCenteredSlider()
     local value = ui.slider('##sld:' .. key, __CPC.settings[key],
       minimum, maximum, format)
+    __CPC.endCenteredSlider()
+    __CPC.popSliderStyle()
     if ui.itemEdited() then __CPC.settings[key] = value end
     if ui.itemClicked(ui.MouseButton.Right) and __CPC.DEFAULTS[key] ~= nil then
       __CPC.settings[key] = __CPC.DEFAULTS[key]
@@ -133,11 +213,14 @@ return function(__CPC)
   end
 
   function __CPC.percentSlider(label, key, minimum, maximum, tooltip)
-    __CPC.drawSettingIndicator(key)
-    ui.textWrapped(label)
+    __CPC.drawCenteredSliderLabel(label, key)
     local current = (__CPC.settings[key] or 0) * 100
+    __CPC.pushSliderStyle()
+    __CPC.beginCenteredSlider()
     local value = ui.slider('##sld:' .. key,
       current, minimum * 100, maximum * 100, '%.0f%%')
+    __CPC.endCenteredSlider()
+    __CPC.popSliderStyle()
     if type(value) == 'number' and (ui.itemEdited() or value ~= current) then
       __CPC.settings[key] = value / 100
     end
@@ -357,31 +440,37 @@ return function(__CPC)
     ui.setCursor(vec2(0, 0))
     ui.dummy(vec2(1, 1))
     if themeIndex == 1 then
-      ui.drawRectFilled(vec2(0, 0), size, __CPC.Theme.COLOR_DAMASCUS_DARK)
-      local contourStep = 24
-      for baseY = -contourStep, size.y + contourStep, contourStep do
-        local previous = nil
-        local previousHighlight = nil
-        for x = -10, size.x + 10, 10 do
-          local terrain = math.sin(x * 0.026 + baseY * 0.071) * 9
-            + math.sin(x * 0.061 - baseY * 0.037) * 5
-            + math.sin(x * 0.013 + baseY * 0.119) * 8
-            + math.sin(x * 0.117 + baseY * 0.023) * 2.5
-          local point = vec2(x, baseY + terrain)
-          local highlightPoint = vec2(x, baseY + terrain - 3)
-          if previous then
-            ui.drawLine(previous, point, __CPC.Theme.COLOR_DAMASCUS_RED, 8)
-            ui.drawLine(previousHighlight, highlightPoint,
-              rgbm(0.45, 0.018, 0.025, 0.10), 2)
-          end
-          previous = point
-          previousHighlight = highlightPoint
-        end
-      end
+      ui.drawImage('background_red.png', vec2(0, 0), size)
     else
       ui.drawRectFilledMultiColor(vec2(0, 0), size,
-        rgbm(0.055, 0.061, 0.074, 0.99), rgbm(0.020, 0.024, 0.032, 0.99),
-        rgbm(0.010, 0.012, 0.016, 0.99), rgbm(0.010, 0.012, 0.016, 0.99))
+        rgbm(accent.r * 0.10, accent.g * 0.10, accent.b * 0.10, 0.99),
+        rgbm(0.018, 0.022, 0.030, 0.99), rgbm(0.007, 0.009, 0.013, 0.99),
+        rgbm(accent.r * 0.035, accent.g * 0.035, accent.b * 0.035, 0.99))
+      for cluster = 1, 7 do
+        local center = vec2(
+          ((cluster * 137 + 53) % (size.x + 140)) - 70,
+          ((cluster * 89 + 41) % (size.y + 120)) - 60)
+        local baseRadiusX = 38 + (cluster * 19) % 52
+        local baseRadiusY = 14 + (cluster * 11) % 26
+        for ring = 1, 5 do
+          local previous = nil
+          local radiusX = baseRadiusX + ring * 13
+          local radiusY = baseRadiusY + ring * 6
+          for segment = 0, 40 do
+            local angle = segment / 40 * math.pi * 2
+            local ripple = math.sin(angle * 3 + cluster * 1.7) * 3
+              + math.sin(angle * 7 - ring * 0.8) * 1.5
+            local point = center + vec2(
+              math.cos(angle) * (radiusX + ripple),
+              math.sin(angle) * (radiusY + ripple * 0.55))
+            if previous then
+              ui.drawLine(previous, point, rgbm(accent.r, accent.g, accent.b,
+                0.08 + ring * 0.018), 1)
+            end
+            previous = point
+          end
+        end
+      end
     end
     ui.drawRectFilled(vec2(0, 0), vec2(size.x, 5), accent)
 
@@ -391,23 +480,19 @@ return function(__CPC)
 
     ui.pushDWriteFont('@System;Weight=Black;Stretch=Condensed')
     ui.dwriteDrawTextClipped('CPC DRIVE SUITE', 24 * __CPC.settings.uiScale,
-      vec2(24, 24), vec2(size.x - 190, 56), ui.Alignment.Start,
-      ui.Alignment.Center, false, __CPC.Theme.COLOR_TEXT)
+      vec2(24, 22), vec2(size.x - 24, 54), ui.Alignment.Center,
+      ui.Alignment.Center, false, accent)
     ui.popDWriteFont()
 
-    ui.drawText('ADAPTIVE CLUTCH  |  THROTTLE CAMERA  |  DYNAMIC 6DOF',
-      vec2(24, 57), __CPC.Theme.COLOR_MUTED)
-    ui.drawText(string.format('Theme: %s   UI Scale: %.2fx',
-        __CPC.Theme.THEME_NAMES[themeIndex], __CPC.settings.uiScale),
-      vec2(24, 75), __CPC.Theme.COLOR_MUTED)
-
-    local stateP1, stateP2 = vec2(size.x - 165, 31), vec2(size.x - 24, 81)
-    ui.drawRectFilled(stateP1, stateP2,
-      rgbm(stateColor.r, stateColor.g, stateColor.b,
-        0.10 + __CPC.uiPulse(2.4, 0.25) * 0.10), 12)
-    ui.drawRect(stateP1, stateP2, stateColor, 12, 0, 1)
-    ui.drawTextClipped(stateText, stateP1, stateP2, stateColor,
-      vec2(0.5, 0.5), false)
+    ui.pushDWriteFont('@System;Weight=Bold;Stretch=Condensed')
+    ui.dwriteDrawTextClipped('ADAPTIVE CLUTCH  |  THROTTLE CAMERA  |  DYNAMIC 6DOF', 10,
+      vec2(24, 54), vec2(size.x - 24, 70), ui.Alignment.Center,
+      ui.Alignment.Center, false, __CPC.Theme.COLOR_MUTED)
+    ui.dwriteDrawTextClipped(string.format('%s  |  %s  |  UI SCALE %.2fx', stateText,
+        __CPC.Theme.THEME_NAMES[themeIndex], __CPC.settings.uiScale), 9,
+      vec2(24, 72), vec2(size.x - 24, 88), ui.Alignment.Center,
+      ui.Alignment.Center, false, stateColor)
+    ui.popDWriteFont()
 
     local gap = 8
     local tileTop, tileBottom = 103, 146
@@ -714,6 +799,11 @@ return function(__CPC)
       __CPC.wheelSmoothScrollEnabled = not __CPC.wheelSmoothScrollEnabled
       __CPC.wheelScrollToSettings = false
     end
+
+    __CPC.section('MOTION PERFORMANCE',
+      'Sets the maximum update rate for camera and NeckFX motion. The game frame rate remains the upper limit.')
+    __CPC.slider('Overall motion update rate', 'motionUpdateFps', 30, 280, '%.0f FPS',
+      'Caps camera and NeckFX motion calculations. Higher values use more CPU and cannot exceed the game update rate.')
 
     __CPC.section('SYSTEMS')
     __CPC.toggle('Adaptive clutch assist', 'clutchEnabled',
@@ -1086,7 +1176,7 @@ return function(__CPC)
 
   function __CPC.drawThrottleSyncControls()
     __CPC.section('MAIN CAMERA MOVEMENT',
-      'These settings control your view angle and the forward/back camera movement together. They use your current cockpit position as the starting point.')
+      'Set your base cockpit pose, view angle, and forward/back camera movement together.')
     __CPC.drawSectionPresets('syncedBase')
 
     local fovMin, fovMax = __CPC.fovHardBounds()
@@ -1101,6 +1191,17 @@ return function(__CPC)
     __CPC.slider('Camera movement speed', 'throttleTransitionSpeed', 0.20, 30.0, '%.1f')
     __CPC.slider('View-angle change speed', 'throttleFovTransitionSpeed', 0.20, 30.0, '%.1f',
       'Sets how quickly the view angle changes, separately from the camera movement above.')
+
+    ui.separator()
+    ui.textColored('STARTING CAMERA POSE', __CPC.accentColor())
+    ui.textDisabled('Offsets are relative to the car saved seat and remain active at zero throttle.')
+    __CPC.drawSectionPresets('startPose')
+    __CPC.drawCameraPoseNudgePad()
+    __CPC.slider('Start X - left / right', 'throttleStartX', -0.30, 0.30, '%+.3f m')
+    __CPC.slider('Start Y - down / up', 'throttleStartY', -0.30, 0.30, '%+.3f m')
+    __CPC.slider('Start Z - back / forward', 'throttleStartZ', -1.00, 1.00, '%+.3f m')
+    __CPC.slider('Start pitch - down / up', 'throttleStartPitch', -30, 30, '%+.1f deg')
+    if ui.button('ZERO STARTING POSE') then __CPC.zeroThrottleStartPose() end
 
     ui.separator()
     ui.textColored('OPTIONAL UP/DOWN MOVEMENT', __CPC.accentColor())
@@ -1171,15 +1272,6 @@ return function(__CPC)
         __CPC.outputPitch, __CPC.outputYaw, __CPC.renderedFovMix * __CPC.throttleEffectScale))
 
     elseif __CPC.settings.throttlePage == 2 then
-      __CPC.section('STARTING HEAD POSE',
-        'Offsets are relative to the car saved seat and remain active at zero throttle.')
-      __CPC.drawSectionPresets('startPose')
-      __CPC.slider('Start X - left / right', 'throttleStartX', -0.30, 0.30, '%+.3f m')
-      __CPC.slider('Start Y - down / up', 'throttleStartY', -0.30, 0.30, '%+.3f m')
-      __CPC.slider('Start Z - back / forward', 'throttleStartZ', -1.00, 1.00, '%+.3f m')
-      __CPC.slider('Start pitch - down / up', 'throttleStartPitch', -30, 30, '%+.1f deg')
-      if ui.button('ZERO STARTING POSE') then __CPC.zeroThrottleStartPose() end
-
       __CPC.section('FORWARD/BACK CAMERA MOVEMENT')
       __CPC.drawSectionPresets('baseAxes')
       ui.textWrapped('The main forward/back movement is controlled at the top of this page. Use these controls only to fine-tune the movement direction and safety limits.')
@@ -1727,7 +1819,12 @@ return function(__CPC)
     __CPC.slider('Yaw twist (slide G)', 'neckYawAngle', -30, 30, '%+.1f deg')
     -- One slider scales all four neck G-force axes at once.
     local gainNow = __CPC.Math.clamp(1.5 / math.max(__CPC.settings.neckGForceAtFull, 0.05), 0.2, 3.0)
-    local gainNew = ui.slider('G-force sensitivity##smallGain', gainNow, 0.2, 3.0, '%.2fx')
+    __CPC.drawCenteredSliderLabel('G-force sensitivity', 'neckGForceAtFull')
+    __CPC.pushSliderStyle()
+    __CPC.beginCenteredSlider()
+    local gainNew = ui.slider('##smallGain', gainNow, 0.2, 3.0, '%.2fx')
+    __CPC.endCenteredSlider()
+    __CPC.popSliderStyle()
     if gainNew ~= gainNow then
       __CPC.settings.neckGForceAtFull = __CPC.Math.clamp(1.5 / math.max(gainNew, 0.05), 0.2, 6.0)
     end
