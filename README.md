@@ -1,261 +1,135 @@
-<div align="center">
+# CPC Drive Suite
 
-<img src="assets/readme/cpc-drive-suite.svg" alt="CPC Drive Suite" width="900">
+CPC Drive Suite is a modular Lua app for Assetto Corsa and Custom Shaders Patch (CSP). It combines adaptive clutch assistance, launch control, cockpit camera and FOV motion, Dynamic 6DOF NeckFX output, gear tracking, telemetry, and a configurable driver HUD in one interface.
 
-<img src="assets/readme/summary.svg" alt="Drivetrain assists, dynamic camera control, and live telemetry" width="900">
+Current version: **3.10.0**
 
-![Assetto Corsa](https://img.shields.io/badge/Assetto_Corsa-Supported-F39C12?style=for-the-badge)
-![CSP Lua](https://img.shields.io/badge/CSP-Lua_App-00B8D9?style=for-the-badge)
-![NeckFX](https://img.shields.io/badge/NeckFX-Backend-2EA44F?style=for-the-badge)
-![Release](https://img.shields.io/badge/Release-3.9.2-7B2CBF?style=for-the-badge)
+## Features
 
-</div>
+- Adaptive clutch assistance with standing-launch, anti-stall, shift, handbrake, and drift-kick controls.
+- Hold-to-dump launch control with configurable bite and throttle targets.
+- Throttle-driven cockpit position and FOV movement.
+- Additional acceleration, braking, steering, road, RPM, slip, impact, and shift camera effects.
+- Dynamic 6DOF NeckFX movement with independent position, rotation, response, mixing, and following controls.
+- Automatic gear-tracking and configurable shift-cycle timing.
+- Full, input-focused, minimal, and circular HUD layouts.
+- Live telemetry for pedals, steering, RPM, speed, gear, camera output, and NeckFX output.
+- Red, blue, green, amber, and purple full-menu themes.
+- Resizable main wheel, subwheel, and slider-title text.
+- JSON import, export, editable defaults, and per-control reset support.
 
----
+## Requirements
 
-<div align="center">
+- Assetto Corsa for Windows.
+- Custom Shaders Patch with Lua app support.
+- CSP control override support for clutch and gear automation.
+- The matching **CPC Drive Suite - NeckFX Backend** for Dynamic 6DOF output.
 
-<img src="assets/readme/gallery.svg" alt="Gallery" width="700">
+No exact CSP version is enforced by the project. If a required CSP API is unavailable, the app reports the affected feature as unavailable instead of silently failing.
 
-</div>
+## Installation
 
-<div align="center">
+1. Copy the `cpc_drive_suite` directory to:
 
-## 🔵 <font color="#2EA44F">𝕸𝖊𝖓𝖚 𝕯𝖎𝖘𝖕𝖑𝖆𝖞 & 𝕯𝖞𝖓𝖆𝖒𝖎𝖈 𝕮𝖔𝖓𝖙𝖗𝖔𝖑𝖘</font>
-![Menu Display Dynamic](menu%20display%20dynamic.png)
+   ```text
+   assettocorsa/apps/lua/cpc_drive_suite
+   ```
 
-## 🟣 <font color="#2EA44F">𝕷𝖎𝖛𝖊 𝕿𝖊𝖑𝖊𝖒𝖊𝖙𝖗𝖞 𝕳𝖀𝕯</font>
-![HUD Display](hud%20display.png)
+2. Confirm that `manifest.ini` and `cpc_drive_suite.lua` are directly inside that directory.
+3. Enable CPC Drive Suite in Content Manager/CSP and open it from the in-game app shelf.
+4. Install the matching cockpit-camera/NeckFX backend supplied with the release.
+5. In CSP NeckFX settings, select **CPC Drive Suite - NeckFX Backend**, enable scripted NeckFX, and reload the session.
 
-</div>
+The shelf app and NeckFX backend are separate components. The backend is required only for the Dynamic 6DOF layer; the rest of the suite can still load without it.
 
----
+## First setup
 
-<div align="center">
+1. Open the app and use the Home button in the center of the main wheel.
+2. Enable **CPC Drive Suite** and only the systems you want to use.
+3. Disable Assetto Corsa's built-in auto-clutch if using the adaptive clutch system.
+4. Disable other apps that directly change cockpit seat position or first-person FOV.
+5. Use the main wheel to choose a system and the subwheel below it to choose a control group.
+6. Start with presets, then make smaller adjustments with the sliders.
+7. Right-click any slider to restore its default value.
 
-<img src="assets/readme/key-features.svg" alt="Key Features" width="700">
+## Interface
 
-</div>
+The default full interface is designed for a 2560×1440 display:
 
-> [!NOTE]
-> 🔵 **Camera, drivetrain, and telemetry controls are grouped into one in-game suite.**
+- The main navigation wheel is on the left.
+- The context-sensitive subwheel remains below it.
+- Main/basic settings appear in the first settings column.
+- Selecting an additional subwheel page opens its extra controls in a second column to the right.
+- The two sliders beneath the wheels adjust overall wheel size and slider-title font size.
+- Panel borders, headings, navigation, and sliders follow the selected appearance theme.
 
-<table>
-  <tr>
-    <td width="50%">
-      
-## 🟢 <font color="#2EA44F">𝕬𝖉𝖆𝖕𝖙𝖎𝖛𝖊 𝕯𝖗𝖎𝖛𝖊𝖙𝖗𝖆𝖎𝖓 𝕮𝖔𝖓𝖙𝖗𝖔𝖑</font>
-- <font color="#0969DA"><strong>Clutch Control - Launch assist, anti-stall, shift support, and turn awareness</strong></font>
-- <font color="#0969DA"><strong>Handbrake Support - Configurable clutch kicks</strong></font>
-- <font color="#0969DA"><strong>Automatic Gearing - RPM targets, per-gear tuning, and downshift protection</strong></font>
-- <font color="#0969DA"><strong>NOS Control - Configurable torque and throttle requirements</strong></font>
+Compact mode remains available from the display settings for a smaller driving-focused control surface.
 
-    </td>
-    <td width="50%">
-      
-## 🔵 <font color="#2EA44F">𝕮𝖔𝖈𝖐𝖕𝖎𝖙 & 𝕮𝖆𝖒𝖊𝖗𝖆 𝕯𝖞𝖓𝖆𝖒𝖎𝖈𝖘</font>
-- <font color="#0969DA"><strong>Dynamic Cockpit Camera - Throttle, braking, speed, and cornering effects</strong></font>
-- <font color="#0969DA"><strong>CSP NeckFX Integration - Six-axis DOF with movement, yaw, pitch, and roll</strong></font>
-- <font color="#0969DA"><strong>Advanced Effects - Steering follow, drift dynamics, and road banking</strong></font>
-- <font color="#0969DA"><strong>Live Telemetry HUD - Real-time vehicle, pedal, G-force, and RPM data</strong></font>
+## Settings files
 
-    </td>
-  </tr>
-</table>
+The app reads and writes these files in its installation directory:
 
----
+- `CPC_DRIVE_SUITE_SETTINGS.JSON` — current user settings.
+- `CPC_DRIVE_SUITE_DEFAULTS.JSON` — editable startup and reset defaults.
 
-<div align="center">
+The Home page provides buttons to save, load, preview, and open the settings folder. Imported values are accepted only when their keys and data types match known settings.
 
-<img src="assets/readme/requirements.svg" alt="Requirements" width="700">
+## Controls and safety
 
-</div>
+- The physical clutch pedal retains priority over the automated clutch command.
+- Launch control can raise throttle to its configured floor, but it cannot reduce a fully pressed physical accelerator.
+- Camera output is limited by configurable movement and FOV safety bounds.
+- A full reset requires confirmation.
+- Runtime and UI failures are caught and displayed by the safe loader where possible.
 
-- <font color="#0969DA"><strong>Assetto Corsa</strong></font>
-- <font color="#0969DA"><strong>Content Manager</strong></font>
-- <font color="#0969DA"><strong>Custom Shaders Patch with Lua apps and scripted cockpit-camera/NeckFX support enabled</strong></font>
+## Project structure
 
----
+| Path | Purpose |
+| --- | --- |
+| `cpc_drive_suite.lua` | Safe entry point and window callbacks |
+| `cpc_drive_suite_core.lua` | Loads and initializes suite modules |
+| `source_loader.lua` | Joins generated source fragments into modules |
+| `ui/` | Navigation, settings pages, controls, appearance, and window layout |
+| `clutch/` | Adaptive clutch and launch-control runtime |
+| `throttle/` | Cockpit camera, FOV, and motion channels |
+| `neck/` | NeckFX connection and telemetry controls |
+| `autogear/` | Gear tracker and shift-cycle runtime |
+| `hud/` | HUD primitives, gauges, pedals, and layouts |
+| `settings/` | Defaults and storage migrations |
+| `presets/` | Preset definitions for major systems |
+| `actions/` | Shared actions and driving helpers |
 
-<div align="center">
+The UI and several runtime modules are stored as source fragments. `source_loader.lua` concatenates them into normal Lua chunks at runtime, keeping individual project files below the established 200-line limit.
 
-<img src="assets/readme/quick-installation.svg" alt="Quick Installation" width="700">
+## Troubleshooting
 
-</div>
+### NeckFX reports backend offline
 
-> [!IMPORTANT]
-> 🟠 **Install both the `apps` and `extension` folders so the in-game app and NeckFX backend can communicate.**
+Select **CPC Drive Suite - NeckFX Backend** in CSP, enable scripted NeckFX, and reload the session. Ensure the companion backend remains in its required CSP cockpit-camera location.
 
-## <font color="#2EA44F">𝕾𝖙𝖊𝖕-𝖇𝖞-𝕾𝖙𝖊𝖕</font>
+### Clutch or gear override is unavailable
 
-1. <font color="#0969DA"><strong>Close Assetto Corsa and Content Manager.</strong></font>
-2. <font color="#0969DA"><strong>Extract `cpc_drive_suite_apps_extension/cpc_drive_suite_apps_extension/` into your Assetto Corsa installation directory.</strong></font>
-3. <font color="#0969DA"><strong>Merge the `apps` and `extension` folders when prompted.</strong></font>
-4. <font color="#0969DA"><strong>In Content Manager, open CSP NeckFX or scripted cockpit-camera settings.</strong></font>
-5. <font color="#0969DA"><strong>Select `CPC Drive Suite - NeckFX Backend` as the cockpit-camera script.</strong></font>
-6. <font color="#0969DA"><strong>Reload the session and open the CPC Drive Suite app from the in-game menu.</strong></font>
-7. <font color="#0969DA"><strong>Verify that the NeckFX page reports ✅ BACKEND ONLINE.</strong></font>
+Confirm that CSP is active and supports the required control override APIs. Disable overlapping clutch or gearbox-assistance apps while testing.
 
-## <font color="#2EA44F">𝕯𝖎𝖗𝖊𝖈𝖙𝖔𝖗𝖞 𝕾𝖙𝖗𝖚𝖈𝖙𝖚𝖗𝖊</font>
+### Camera movement does not appear
 
-```
-Assetto Corsa/
-├── apps/lua/cpc_drive_suite/
-│   ├── cpc_drive_suite.lua
-│   ├── cpc_drive_suite_core.lua
-│   ├── cpc_drive_suite_ui.lua
-│   ├── cpc_drive_suite_hud.lua
-│   └── CPC_DRIVE_SUITE_*.JSON
-│
-└── extension/lua/cockpit-camera/default/
-    └── [NeckFX backend files]
-```
+Use cockpit view, enable the throttle camera, and press **Rebase Camera / FOV** on the Home page. Disable other apps that directly edit cockpit position or FOV.
 
----
+### The app shows an error instead of the menu
 
-<div align="center">
+Read the displayed safe-loader error first. Verify the complete directory was copied, including every subdirectory and Lua fragment.
 
-<img src="assets/readme/configuration.svg" alt="Configuration" width="700">
+### Settings behave unexpectedly
 
-</div>
+Right-click an individual slider, use the relevant section reset, or restore `CPC_DRIVE_SUITE_DEFAULTS.JSON`. Back up custom JSON settings before using the full reset.
 
-## <font color="#2EA44F">𝕾𝖊𝖙𝖙𝖎𝖓𝖌𝖘 𝕻𝖗𝖔𝖋𝖎𝖑𝖊𝖘</font>
+## Development notes
 
-<div align="center">
+- Keep individual Lua fragments at or below 200 lines.
+- Add new settings to the Lua defaults and both JSON files when they must persist.
+- Preserve the safe-loader behavior so UI failures remain visible in-game.
+- Test clutch, gear, camera, and NeckFX changes independently because each uses different CSP APIs.
 
-<font color="#0969DA"><strong>All settings are stored and managed through JSON profiles.</strong></font>
+## License
 
-</div>
-
-| File | Purpose |
-|------|---------|
-| `CPC_DRIVE_SUITE_DEFAULTS.JSON` | <font color="#0969DA">📦 Shipped defaults (never modified automatically)</font> |
-| `CPC_DRIVE_SUITE_SETTINGS.JSON` | <font color="#0969DA">👤 Active user profile (auto-saved on app close)</font> |
-
-## <font color="#2EA44F">𝕼𝖚𝖎𝖈𝖐 𝕮𝖔𝖓𝖙𝖗𝖔𝖑𝖘</font>
-
-- 🎚️ <font color="#0969DA"><strong>Right-click any slider to restore its default value.</strong></font>
-- 🔄 <font color="#0969DA"><strong>System reset buttons restore individual systems.</strong></font>
-- 🏁 <font color="#0969DA"><strong>Full reset restores the shipped profile.</strong></font>
-
-## <font color="#2EA44F">𝕻𝖗𝖊𝖘𝖊𝖙 𝕺𝖕𝖙𝖎𝖔𝖓𝖘</font>
-
-<div align="center">
-
-<font color="#0969DA"><strong>The suite includes three pre-configured presets to get you started.</strong></font>
-
-</div>
-- 💚 <font color="#0969DA"><strong>Light - Subtle assistance and effects</strong></font>
-- 💙 <font color="#0969DA"><strong>Balanced - Moderate, versatile setup</strong></font>
-- 💪 <font color="#0969DA"><strong>Strong - Maximum features and responsiveness</strong></font>
-
----
-
-<div align="center">
-
-<img src="assets/readme/troubleshooting.svg" alt="Troubleshooting" width="700">
-
-</div>
-
-> [!WARNING]
-> 🔴 **A missing backend or unwritable settings file prevents the suite from saving or reporting NeckFX status correctly.**
-
-## ❌ <font color="#2EA44F">𝕹𝖊𝖈𝖐𝕱𝖃 𝕭𝖆𝖈𝖐𝖊𝖓𝖉 𝕺𝖋𝖋𝖑𝖎𝖓𝖊</font>
-```
-✓ Confirm backend installed at: extension/lua/cockpit-camera/default/
-✓ Select "CPC Drive Suite - NeckFX Backend" in CSP NeckFX settings
-✓ Reload the current session
-```
-
-## ❌ <font color="#2EA44F">𝕾𝖊𝖙𝖙𝖎𝖓𝖌𝖘 𝕮𝖆𝖓𝖓𝖔𝖙 𝕭𝖊 𝕾𝖆𝖛𝖊𝖉</font>
-```
-✓ Verify app is under: Assetto Corsa/apps/lua/
-✓ Ensure CPC_DRIVE_SUITE_SETTINGS.JSON is writable
-✓ Do NOT install only in Windows Roaming folder
-✓ Check folder permissions for the Assetto Corsa directory
-```
-
----
-
-<div align="center">
-
-<img src="assets/readme/project-structure.svg" alt="Project Structure" width="700">
-
-</div>
-
-```
-cpc_drive_suite_apps_extension/
-└── cpc_drive_suite_apps_extension/
-    ├── apps/lua/cpc_drive_suite/
-    │   ├── cpc_drive_suite.lua                 # App loader
-    │   ├── cpc_drive_suite_core.lua            # Module orchestrator
-    │   ├── cpc_drive_suite_ui.lua              # Dashboard & UI
-    │   ├── cpc_drive_suite_hud.lua             # Telemetry HUD
-    │   ├── CPC_DRIVE_SUITE_DEFAULTS.JSON       # Default profile
-    │   └── CPC_DRIVE_SUITE_SETTINGS.JSON       # User profile
-    │
-    └── extension/lua/cockpit-camera/default/   # NeckFX backend
-```
-
----
-
-<div align="center">
-
-<img src="assets/readme/getting-started.svg" alt="Getting Started" width="700">
-
-</div>
-
-> [!TIP]
-> 🟢 **Start with a Light or Balanced preset, then fine-tune each system after verifying the backend is online.**
-
-1. <font color="#0969DA"><strong>Launch Assetto Corsa.</strong></font>
-2. <font color="#0969DA"><strong>Open the CPC Drive Suite app from the in-game menu.</strong></font>
-3. <font color="#0969DA"><strong>Configure systems based on your driving style and car setup.</strong></font>
-4. <font color="#0969DA"><strong>Try presets to find your baseline.</strong></font>
-5. <font color="#0969DA"><strong>Fine-tune individual sliders for your preferences.</strong></font>
-6. <font color="#0969DA"><strong>Save your profile for future sessions.</strong></font>
-
-<div align="center">
-
-💡 <font color="#0969DA"><strong>Tip: Manually edit JSON profiles for advanced configurations. Always maintain valid JSON syntax and preserve each setting's original data type.</strong></font>
-
-</div>
-
----
-
-<div align="center">
-
-<img src="assets/readme/documentation.svg" alt="Documentation" width="700">
-
-</div>
-
-<div align="center">
-
-<font color="#0969DA"><strong>For detailed installation guidance, see the included installation tutorial.</strong></font>
-
-</div>
-- [`CPC_DRIVE_SUITE_INSTALL_TUTORIAL.txt`](cpc_drive_suite_apps_extension/cpc_drive_suite_apps_extension/apps/lua/cpc_drive_suite/CPC_DRIVE_SUITE_INSTALL_TUTORIAL.txt)
-
----
-
-<div align="center">
-
-<img src="assets/readme/license-and-credits.svg" alt="License and Credits" width="700">
-
-</div>
-
-<div align="center">
-
-<font color="#0969DA"><strong>CPC Drive Suite - Modular CSP Lua app for Assetto Corsa</strong></font>
-
-<font color="#0969DA"><strong>Built for: Assetto Corsa | Custom Shaders Patch | Content Manager</strong></font>
-
-</div>
-
----
-
-<div align="center">
-
-**[Report Issue](../../issues)** • **[Discussions](../../discussions)** • **[Releases](../../releases)**
-
-</div>
+No license file is currently included. Add a license before distributing modified versions or accepting external contributions.

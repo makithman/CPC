@@ -1,0 +1,30 @@
+CPC DRIVE SUITE 3.10.0 - EASY INSTALL
+=====================================
+
+1. Close Assetto Corsa and Content Manager.
+2. Open the Assetto Corsa installation folder.
+3. Extract the contents of this ZIP directly into that folder.
+4. Allow Windows to merge the included apps and extension folders.
+5. Start Content Manager and enable CPC Drive Suite.
+6. Open CSP NeckFX/scripted cockpit-camera settings.
+7. Select "CPC Drive Suite - NeckFX Backend" and reload the session.
+8. Open CPC Drive Suite in-game and confirm BACKEND ONLINE on the NeckFX page.
+
+EXPECTED LOCATIONS
+------------------
+
+apps/lua/cpc_drive_suite/
+extension/lua/cockpit-camera/default/
+
+IMPORTANT
+---------
+
+The included NeckFX backend installs into CSP's cockpit-camera/default folder.
+Back up an existing custom default cockpit-camera script before extracting if
+you want to restore it later.
+
+The app and backend both use the shared connection key:
+cpc.drive.suite.neckfx.v3
+
+See apps/lua/cpc_drive_suite/README.md for features, usage, settings, safety,
+project structure, and troubleshooting.
