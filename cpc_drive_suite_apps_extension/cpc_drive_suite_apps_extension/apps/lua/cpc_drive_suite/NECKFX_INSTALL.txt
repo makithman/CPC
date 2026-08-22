@@ -1,0 +1,20 @@
+CPC DRIVE SUITE 3.9.2 — NECKFX BACKEND INSTALL
+
+1. Keep the CPC Drive Suite Lua app files together in its normal CSP Lua app folder.
+2. Copy the folder:
+     neckfx_backend/CPC_Drive_Suite_NeckFX_Backend
+   into your CSP NeckFX cockpit scripts directory (the same place your other cockpit.lua NeckFX presets live).
+3. In Content Manager / CSP NeckFX, select:
+     CPC Drive Suite - NeckFX Backend
+4. Reload the session.
+5. Open CPC Drive Suite. The NeckFX page should show BACKEND ONLINE and live XYZ/Yaw/Pitch/Roll values.
+
+The app and backend must both use the shared key:
+  cpc.drive.suite.neckfx.v3
+
+The backend acknowledges appSequence by writing backendSequence every frame and keeps backendPresent=true while selected.
+
+DEVELOPER NOTE
+--------------
+All backend NeckFX effect logic is in cpc_drive_suite_neck_effects.lua.
+cockpit.lua is intentionally only the loader required by CSP NeckFX.
