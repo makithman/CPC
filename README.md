@@ -1,8 +1,8 @@
-# 🎮 <font color="#2EA44F">𝕮𝕻𝕮 𝕯𝖗𝖎𝖛𝖊 𝕾𝖚𝖎𝖙𝖊</font>
-
 <div align="center">
 
-<font color="#0969DA"><strong>A modular Custom Shaders Patch (CSP) Lua app for Assetto Corsa that brings drivetrain assists, dynamic camera control, and live telemetry into one unified in-game suite.</strong></font>
+<img src="assets/readme/cpc-drive-suite.svg" alt="CPC Drive Suite" width="900">
+
+<img src="assets/readme/summary.svg" alt="Drivetrain assists, dynamic camera control, and live telemetry" width="900">
 
 ![Assetto Corsa](https://img.shields.io/badge/Assetto_Corsa-Supported-F39C12?style=for-the-badge)
 ![CSP Lua](https://img.shields.io/badge/CSP-Lua_App-00B8D9?style=for-the-badge)
@@ -13,7 +13,11 @@
 
 ---
 
-# 📸 <font color="#2EA44F">𝕲𝖆𝖑𝖑𝖊𝖗𝖞</font>
+<div align="center">
+
+<img src="assets/readme/gallery.svg" alt="Gallery" width="700">
+
+</div>
 
 <div align="center">
 
@@ -27,7 +31,14 @@
 
 ---
 
-# ✨ <font color="#2EA44F">𝕶𝖊𝖞 𝕱𝖊𝖆𝖙𝖚𝖗𝖊𝖘</font>
+<div align="center">
+
+<img src="assets/readme/key-features.svg" alt="Key Features" width="700">
+
+</div>
+
+> [!NOTE]
+> 🔵 **Camera, drivetrain, and telemetry controls are grouped into one in-game suite.**
 
 <table>
   <tr>
@@ -54,7 +65,11 @@
 
 ---
 
-# 📋 <font color="#2EA44F">𝕽𝖊𝖖𝖚𝖎𝖗𝖊𝖒𝖊𝖓𝖙𝖘</font>
+<div align="center">
+
+<img src="assets/readme/requirements.svg" alt="Requirements" width="700">
+
+</div>
 
 - <font color="#0969DA"><strong>Assetto Corsa</strong></font>
 - <font color="#0969DA"><strong>Content Manager</strong></font>
@@ -62,7 +77,11 @@
 
 ---
 
-# 🚀 <font color="#2EA44F">𝕼𝖚𝖎𝖈𝖐 𝕴𝖓𝖘𝖙𝖆𝖑𝖑𝖆𝖙𝖎𝖔𝖓</font>
+<div align="center">
+
+<img src="assets/readme/quick-installation.svg" alt="Quick Installation" width="700">
+
+</div>
 
 > [!IMPORTANT]
 > 🟠 **Install both the `apps` and `extension` folders so the in-game app and NeckFX backend can communicate.**
@@ -94,7 +113,11 @@ Assetto Corsa/
 
 ---
 
-# ⚙️ <font color="#2EA44F">𝕮𝖔𝖓𝖋𝖎𝖌𝖚𝖗𝖆𝖙𝖎𝖔𝖓</font>
+<div align="center">
+
+<img src="assets/readme/configuration.svg" alt="Configuration" width="700">
+
+</div>
 
 ## <font color="#2EA44F">𝕾𝖊𝖙𝖙𝖎𝖓𝖌𝖘 𝕻𝖗𝖔𝖋𝖎𝖑𝖊𝖘</font>
 
@@ -128,7 +151,11 @@ Assetto Corsa/
 
 ---
 
-# 🛠️ <font color="#2EA44F">𝕿𝖗𝖔𝖚𝖇𝖑𝖊𝖘𝖍𝖔𝖔𝖙𝖎𝖓𝖌</font>
+<div align="center">
+
+<img src="assets/readme/troubleshooting.svg" alt="Troubleshooting" width="700">
+
+</div>
 
 > [!WARNING]
 > 🔴 **A missing backend or unwritable settings file prevents the suite from saving or reporting NeckFX status correctly.**
@@ -150,7 +177,11 @@ Assetto Corsa/
 
 ---
 
-# 📁 <font color="#2EA44F">𝕻𝖗𝖔𝖏𝖊𝖈𝖙 𝕾𝖙𝖗𝖚𝖈𝖙𝖚𝖗𝖊</font>
+<div align="center">
+
+<img src="assets/readme/project-structure.svg" alt="Project Structure" width="700">
+
+</div>
 
 ```
 cpc_drive_suite_apps_extension/
@@ -168,7 +199,11 @@ cpc_drive_suite_apps_extension/
 
 ---
 
-# 🎯 <font color="#2EA44F">𝕲𝖊𝖙𝖙𝖎𝖓𝖌 𝕾𝖙𝖆𝖗𝖙𝖊𝖉</font>
+<div align="center">
+
+<img src="assets/readme/getting-started.svg" alt="Getting Started" width="700">
+
+</div>
 
 > [!TIP]
 > 🟢 **Start with a Light or Balanced preset, then fine-tune each system after verifying the backend is online.**
@@ -188,7 +223,11 @@ cpc_drive_suite_apps_extension/
 
 ---
 
-# 📚 <font color="#2EA44F">𝕯𝖔𝖈𝖚𝖒𝖊𝖓𝖙𝖆𝖙𝖎𝖔𝖓</font>
+<div align="center">
+
+<img src="assets/readme/documentation.svg" alt="Documentation" width="700">
+
+</div>
 
 <div align="center">
 
@@ -199,7 +238,11 @@ cpc_drive_suite_apps_extension/
 
 ---
 
-# 📝 <font color="#2EA44F">𝕷𝖎𝖈𝖊𝖓𝖘𝖊 & 𝕮𝖗𝖊𝖉𝖎𝖙𝖘</font>
+<div align="center">
+
+<img src="assets/readme/license-and-credits.svg" alt="License and Credits" width="700">
+
+</div>
 
 <div align="center">
 
