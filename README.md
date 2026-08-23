@@ -1,135 +1,163 @@
-# CPC Drive Suite
+<div align="center">
+  <img src="assets/cpc-drive-suite-banner.svg" alt="CPC Drive Suite — Assetto Corsa and CSP" width="100%">
 
-CPC Drive Suite is a modular Lua app for Assetto Corsa and Custom Shaders Patch (CSP). It combines adaptive clutch assistance, launch control, cockpit camera and FOV motion, Dynamic 6DOF NeckFX output, gear tracking, telemetry, and a configurable driver HUD in one interface.
+  **A free, all-in-one driving control and camera app for Assetto Corsa.**
 
-Current version: **3.10.0**
+  `v3.10.0` · `Lua` · `Custom Shaders Patch`
+</div>
 
-## Features
+## 𝖂𝖍𝖆𝖙 𝖎𝖙 𝖉𝖔𝖊𝖘
 
-- Adaptive clutch assistance with standing-launch, anti-stall, shift, handbrake, and drift-kick controls.
-- Hold-to-dump launch control with configurable bite and throttle targets.
-- Throttle-driven cockpit position and FOV movement.
-- Additional acceleration, braking, steering, road, RPM, slip, impact, and shift camera effects.
-- Dynamic 6DOF NeckFX movement with independent position, rotation, response, mixing, and following controls.
-- Automatic gear-tracking and configurable shift-cycle timing.
-- Full, input-focused, minimal, and circular HUD layouts.
-- Live telemetry for pedals, steering, RPM, speed, gear, camera output, and NeckFX output.
-- Red, blue, green, amber, and purple full-menu themes.
-- Resizable main wheel, subwheel, and slider-title text.
-- JSON import, export, editable defaults, and per-control reset support.
+CPC Drive Suite puts clutch assistance, launch control, automatic gear tracking, cockpit camera and FOV motion, Dynamic 6DOF NeckFX, telemetry, presets, and a configurable driver HUD into one accessible wheel-based menu. It is made with love for the community and is completely free.
 
-## Requirements
+## 𝕳𝖎𝖌𝖍𝖑𝖎𝖌𝖍𝖙𝖘
+
+- Adaptive clutch, anti-stall, launch, handbrake, drift-kick, and shift controls.
+- Synchronized throttle-driven cockpit movement and FOV response.
+- Dynamic 6DOF NeckFX with position, rotation, response, and follow controls.
+- Automatic gear tracking, shift timing, live telemetry, and four HUD layouts.
+- Five full-menu color themes with resizable wheels, labels, and a 1280×720 mode.
+- JSON settings import, export, editable defaults, presets, and per-control reset.
+
+## 𝕴𝖓𝖘𝖙𝖆𝖑𝖑
+
+### 𝕰𝖆𝖘𝖞 𝖎𝖓𝖘𝖙𝖆𝖑𝖑
+
+1. Close Assetto Corsa and Content Manager.
+2. Extract the release ZIP into the Assetto Corsa installation folder.
+3. Allow Windows to merge the included `apps` and `extension` folders.
+4. Enable **CPC Drive Suite** in Content Manager/CSP.
+5. Select **CPC Drive Suite - NeckFX Backend** in CSP's scripted NeckFX settings, then reload the session.
+
+### 𝕬𝖕𝖕 𝖔𝖓𝖑𝖞
+
+Copy this repository to:
+
+```text
+assettocorsa/apps/lua/cpc_drive_suite/
+```
+
+The companion backend is required only for Dynamic 6DOF NeckFX. The other systems can run without it.
+
+## 𝕼𝖚𝖎𝖈𝖐 𝖘𝖙𝖆𝖗𝖙
+
+1. Open the app and press **Home** in the main wheel.
+2. Enable the suite and the systems you want.
+3. Use the main wheel for a system and the subwheel below it for a control page.
+4. Adjust basic controls in the first slider column; added subwheel controls open to its right.
+5. Right-click a slider to restore its default value.
+
+The full UI targets 2560×1440. Use the button below the wheel-size and title-size sliders to switch to the smaller 1280×720 layout.
+
+## 𝕸𝖊𝖓𝖚 𝖋𝖑𝖔𝖜
+
+<div align="center">
+  <img src="assets/ui-menu-flow.svg" alt="Main wheel to subwheel and settings-panel menu flow" width="100%">
+</div>
+
+## 𝕽𝖊𝖖𝖚𝖎𝖗𝖊𝖒𝖊𝖓𝖙𝖘
 
 - Assetto Corsa for Windows.
 - Custom Shaders Patch with Lua app support.
-- CSP control override support for clutch and gear automation.
-- The matching **CPC Drive Suite - NeckFX Backend** for Dynamic 6DOF output.
+- CSP control overrides for clutch and automatic-gear features.
+- The matching CPC NeckFX backend for Dynamic 6DOF output.
 
-No exact CSP version is enforced by the project. If a required CSP API is unavailable, the app reports the affected feature as unavailable instead of silently failing.
+## 𝕾𝖊𝖙𝖙𝖎𝖓𝖌𝖘
 
-## Installation
+- `CPC_DRIVE_SUITE_SETTINGS.JSON` stores current user settings.
+- `CPC_DRIVE_SUITE_DEFAULTS.JSON` stores editable startup and reset defaults.
+- The Home page can save, load, preview, and open the settings folder.
 
-1. Copy the `cpc_drive_suite` directory to:
+## 𝕱𝖚𝖑𝖑 𝖕𝖗𝖔𝖏𝖊𝖈𝖙 𝖘𝖙𝖗𝖚𝖈𝖙𝖚𝖗𝖊
 
-   ```text
-   assettocorsa/apps/lua/cpc_drive_suite
-   ```
+```text
+cpc_drive_suite/
+├── actions/
+│   ├── arcade_overdrive.lua
+│   ├── clutch_speed_helpers.lua
+│   └── suite_presets.lua
+├── autogear/
+│   ├── tracker_runtime.lua
+│   └── tracker_update.lua
+├── assets/
+│   ├── cpc-drive-suite-banner.svg
+│   └── ui-menu-flow.svg
+├── clutch/
+│   ├── adaptive_control.lua
+│   ├── launch_adaptive.lua
+│   └── runtime_isolation.lua
+├── hud/
+│   ├── circular_gauges.lua
+│   ├── circular_minimal_window.lua
+│   ├── pedals_full_dashboard.lua
+│   └── telemetry_primitives.lua
+├── neck/
+│   ├── connection_sync.lua
+│   └── telemetry_controls.lua
+├── presets/
+│   ├── camera_fov.lua
+│   ├── clutch_camera.lua
+│   ├── hud_autogear.lua
+│   └── neckfx.lua
+├── settings/
+│   ├── advanced_motion_defaults.lua
+│   ├── clutch_camera_defaults.lua
+│   ├── final_migrations.lua
+│   ├── neck_ui_defaults.lua
+│   └── storage_migrations.lua
+├── throttle/
+│   ├── camera_output_fov.lua
+│   ├── camera_session.lua
+│   ├── camera_update_motion.lua
+│   ├── linear_dynamics.lua
+│   └── runtime_channels.lua
+├── ui/
+│   ├── appearance_modes.lua
+│   ├── chrome_navigation.lua
+│   ├── clutch_gear_pages.lua
+│   ├── common_controls.lua
+│   ├── navigation_tree.lua
+│   ├── neck_simple_pages.lua
+│   ├── sidebar_home.lua
+│   ├── sliders_presets.lua
+│   ├── throttle_advanced_pages.lua
+│   ├── throttle_pages.lua
+│   └── window_callbacks.lua
+├── CPC_DRIVE_SUITE_DEFAULTS.JSON
+├── CPC_DRIVE_SUITE_SETTINGS.JSON
+├── INSTALL.txt
+├── README.md
+├── cpc_drive_suite.lua
+├── cpc_drive_suite_actions.lua
+├── cpc_drive_suite_autogear.lua
+├── cpc_drive_suite_clutch.lua
+├── cpc_drive_suite_core.lua
+├── cpc_drive_suite_hud.lua
+├── cpc_drive_suite_lifecycle.lua
+├── cpc_drive_suite_math.lua
+├── cpc_drive_suite_neck.lua
+├── cpc_drive_suite_presets.lua
+├── cpc_drive_suite_settings.lua
+├── cpc_drive_suite_settings_file.lua
+├── cpc_drive_suite_theme.lua
+├── cpc_drive_suite_throttle.lua
+├── cpc_drive_suite_ui.lua
+├── icon.png
+├── manifest.ini
+└── source_loader.lua
+```
 
-2. Confirm that `manifest.ini` and `cpc_drive_suite.lua` are directly inside that directory.
-3. Enable CPC Drive Suite in Content Manager/CSP and open it from the in-game app shelf.
-4. Install the matching cockpit-camera/NeckFX backend supplied with the release.
-5. In CSP NeckFX settings, select **CPC Drive Suite - NeckFX Backend**, enable scripted NeckFX, and reload the session.
+The feature folders contain short Lua source fragments. `source_loader.lua` assembles them into regular modules at runtime.
 
-The shelf app and NeckFX backend are separate components. The backend is required only for the Dynamic 6DOF layer; the rest of the suite can still load without it.
+Generated installation and backup ZIP archives are release artifacts, so they are not included in the repository source tree above.
 
-## First setup
+## 𝕿𝖗𝖔𝖚𝖇𝖑𝖊𝖘𝖍𝖔𝖔𝖙𝖎𝖓𝖌
 
-1. Open the app and use the Home button in the center of the main wheel.
-2. Enable **CPC Drive Suite** and only the systems you want to use.
-3. Disable Assetto Corsa's built-in auto-clutch if using the adaptive clutch system.
-4. Disable other apps that directly change cockpit seat position or first-person FOV.
-5. Use the main wheel to choose a system and the subwheel below it to choose a control group.
-6. Start with presets, then make smaller adjustments with the sliders.
-7. Right-click any slider to restore its default value.
+- **Backend offline:** Select the CPC backend in scripted NeckFX, enable it, and reload the session.
+- **No camera movement:** Use cockpit view, enable throttle camera, press **Rebase Camera / FOV**, and disable conflicting camera apps.
+- **Clutch or gears unavailable:** Confirm CSP control overrides are supported and disable overlapping assistance apps.
+- **Menu error:** Check the safe-loader message and verify every folder and Lua fragment was copied.
 
-## Interface
+## 𝕷𝖎𝖈𝖊𝖓𝖘𝖊
 
-The default full interface is designed for a 2560×1440 display:
-
-- The main navigation wheel is on the left.
-- The context-sensitive subwheel remains below it.
-- Main/basic settings appear in the first settings column.
-- Selecting an additional subwheel page opens its extra controls in a second column to the right.
-- The two sliders beneath the wheels adjust overall wheel size and slider-title font size.
-- Panel borders, headings, navigation, and sliders follow the selected appearance theme.
-
-Compact mode remains available from the display settings for a smaller driving-focused control surface.
-
-## Settings files
-
-The app reads and writes these files in its installation directory:
-
-- `CPC_DRIVE_SUITE_SETTINGS.JSON` — current user settings.
-- `CPC_DRIVE_SUITE_DEFAULTS.JSON` — editable startup and reset defaults.
-
-The Home page provides buttons to save, load, preview, and open the settings folder. Imported values are accepted only when their keys and data types match known settings.
-
-## Controls and safety
-
-- The physical clutch pedal retains priority over the automated clutch command.
-- Launch control can raise throttle to its configured floor, but it cannot reduce a fully pressed physical accelerator.
-- Camera output is limited by configurable movement and FOV safety bounds.
-- A full reset requires confirmation.
-- Runtime and UI failures are caught and displayed by the safe loader where possible.
-
-## Project structure
-
-| Path | Purpose |
-| --- | --- |
-| `cpc_drive_suite.lua` | Safe entry point and window callbacks |
-| `cpc_drive_suite_core.lua` | Loads and initializes suite modules |
-| `source_loader.lua` | Joins generated source fragments into modules |
-| `ui/` | Navigation, settings pages, controls, appearance, and window layout |
-| `clutch/` | Adaptive clutch and launch-control runtime |
-| `throttle/` | Cockpit camera, FOV, and motion channels |
-| `neck/` | NeckFX connection and telemetry controls |
-| `autogear/` | Gear tracker and shift-cycle runtime |
-| `hud/` | HUD primitives, gauges, pedals, and layouts |
-| `settings/` | Defaults and storage migrations |
-| `presets/` | Preset definitions for major systems |
-| `actions/` | Shared actions and driving helpers |
-
-The UI and several runtime modules are stored as source fragments. `source_loader.lua` concatenates them into normal Lua chunks at runtime, keeping individual project files below the established 200-line limit.
-
-## Troubleshooting
-
-### NeckFX reports backend offline
-
-Select **CPC Drive Suite - NeckFX Backend** in CSP, enable scripted NeckFX, and reload the session. Ensure the companion backend remains in its required CSP cockpit-camera location.
-
-### Clutch or gear override is unavailable
-
-Confirm that CSP is active and supports the required control override APIs. Disable overlapping clutch or gearbox-assistance apps while testing.
-
-### Camera movement does not appear
-
-Use cockpit view, enable the throttle camera, and press **Rebase Camera / FOV** on the Home page. Disable other apps that directly edit cockpit position or FOV.
-
-### The app shows an error instead of the menu
-
-Read the displayed safe-loader error first. Verify the complete directory was copied, including every subdirectory and Lua fragment.
-
-### Settings behave unexpectedly
-
-Right-click an individual slider, use the relevant section reset, or restore `CPC_DRIVE_SUITE_DEFAULTS.JSON`. Back up custom JSON settings before using the full reset.
-
-## Development notes
-
-- Keep individual Lua fragments at or below 200 lines.
-- Add new settings to the Lua defaults and both JSON files when they must persist.
-- Preserve the safe-loader behavior so UI failures remain visible in-game.
-- Test clutch, gear, camera, and NeckFX changes independently because each uses different CSP APIs.
-
-## License
-
-No license file is currently included. Add a license before distributing modified versions or accepting external contributions.
+No license file is currently included. Add a license before redistributing modified versions or accepting external contributions.

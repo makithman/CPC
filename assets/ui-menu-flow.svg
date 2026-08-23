@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">CPC Drive Suite menu flow</title>
+  <desc id="desc">Choose a system on the main wheel, select a control page on the subwheel, then display either one main settings panel or main and submenu settings side by side.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 10 5 0 10Z" fill="#e51b2b"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="520" rx="22" fill="#08090b"/>
+  <text x="600" y="54" fill="#d3d5da" font-family="Cambria Math, Noto Sans Math, Segoe UI Symbol, serif" font-size="30" font-weight="700" text-anchor="middle">𝕳𝕺𝖂 𝕿𝕳𝕰 𝖀𝕴 𝕸𝕰𝕹𝖀𝕾 𝕺𝕻𝕰𝕹</text>
+  <rect x="430" y="72" width="340" height="3" rx="2" fill="#e51b2b"/>
+
+  <g font-family="Segoe UI, Arial, sans-serif" text-anchor="middle">
+    <rect x="55" y="120" width="250" height="116" rx="14" fill="#15171b" stroke="#e51b2b" stroke-width="3"/>
+    <text x="180" y="162" fill="#e51b2b" font-size="16" font-weight="700">𝕾𝕿𝕰𝕻 1</text>
+    <text x="180" y="194" fill="#d3d5da" font-size="24" font-weight="700">𝕸𝕬𝕴𝕹 𝖂𝕳𝕰𝕰𝕷</text>
+    <text x="180" y="220" fill="#a7abb5" font-size="15">Choose a system</text>
+
+    <path d="M305 178H390" fill="none" stroke="#e51b2b" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="410" y="120" width="250" height="116" rx="14" fill="#15171b" stroke="#6f747d" stroke-width="3"/>
+    <text x="535" y="162" fill="#b4b8c0" font-size="16" font-weight="700">𝕾𝕿𝕰𝕻 2</text>
+    <text x="535" y="194" fill="#d3d5da" font-size="24" font-weight="700">𝕾𝖀𝕭𝖂𝕳𝕰𝕰𝕷</text>
+    <text x="535" y="220" fill="#a7abb5" font-size="15">Choose a control page</text>
+
+    <path d="M660 178H745" fill="none" stroke="#e51b2b" stroke-width="3" marker-end="url(#arrow)"/>
+
+    <rect x="765" y="120" width="380" height="116" rx="14" fill="#15171b" stroke="#e51b2b" stroke-width="3"/>
+    <text x="955" y="162" fill="#e51b2b" font-size="16" font-weight="700">𝕾𝕿𝕰𝕻 3</text>
+    <text x="955" y="194" fill="#d3d5da" font-size="24" font-weight="700">𝕯𝕴𝕾𝕻𝕷𝕬𝖄 𝕾𝕰𝕿𝕿𝕴𝕹𝕲𝕾</text>
+    <text x="955" y="220" fill="#a7abb5" font-size="15">The selected controls appear on the right</text>
+
+    <path d="M955 236V282M955 282H330V315M955 282H870V315" fill="none" stroke="#6f747d" stroke-width="3"/>
+
+    <text x="330" y="307" fill="#a7abb5" font-size="14">𝕭𝕬𝕾𝕴𝕮 𝕻𝕬𝕲𝕰</text>
+    <rect x="95" y="325" width="470" height="130" rx="14" fill="#15171b" stroke="#e51b2b" stroke-width="2"/>
+    <text x="330" y="368" fill="#d3d5da" font-size="22" font-weight="700">𝕸𝕬𝕴𝕹 𝕾𝕰𝕿𝕿𝕴𝕹𝕲𝕾</text>
+    <text x="330" y="399" fill="#a7abb5" font-size="15">One full-width slider panel</text>
+    <text x="330" y="426" fill="#e51b2b" font-size="14" font-weight="700">𝕯𝕰𝕱𝕬𝖀𝕷𝕿 𝕾𝖀𝕭𝖂𝕳𝕰𝕰𝕷 𝕺𝕻𝕿𝕴𝕺𝕹</text>
+
+    <text x="870" y="307" fill="#a7abb5" font-size="14">𝕰𝖃𝕿𝕽𝕬 𝕻𝕬𝕲𝕰</text>
+    <rect x="620" y="325" width="235" height="130" rx="14" fill="#15171b" stroke="#e51b2b" stroke-width="2"/>
+    <text x="737" y="378" fill="#d3d5da" font-size="19" font-weight="700">𝕸𝕬𝕴𝕹 𝕾𝕰𝕿𝕿𝕴𝕹𝕲𝕾</text>
+    <text x="737" y="408" fill="#a7abb5" font-size="14">Basic controls</text>
+    <rect x="870" y="325" width="275" height="130" rx="14" fill="#15171b" stroke="#6f747d" stroke-width="2"/>
+    <text x="1007" y="378" fill="#d3d5da" font-size="19" font-weight="700">𝕾𝖀𝕭𝖂𝕳𝕰𝕰𝕷 𝕾𝕰𝕿𝕿𝕴𝕹𝕲𝕾</text>
+    <text x="1007" y="408" fill="#a7abb5" font-size="14">Selected extra controls</text>
+  </g>
+</svg>

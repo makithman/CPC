@@ -86,7 +86,7 @@ return [====[
     __CPC.section('RESET AND SAFETY')
     if ui.button('RESET HUD APPEARANCE') then
       local keys = {
-        'colorTheme', 'uiScale', 'uiWheelScale', 'uiSliderLabelScale',
+        'colorTheme', 'uiScale', 'uiWheelScale', 'uiSliderLabelScale', 'uiLowResolution',
         'hudMode', 'hudOpacity', 'hudAnimation',
         'hudSpeedMph', 'hudShowWheel', 'hudShowPedals', 'hudShowCamera',
         'hudShowRPM', 'hudShowStatus', 'hudShowGMeter', 'hudShowShiftLights'

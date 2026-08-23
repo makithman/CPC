@@ -1,5 +1,4 @@
 return [====[
-    local fovThrottleTarget = rawThrottleInput
     __CPC.throttleInput = baseThrottleTarget
     __CPC.gearIsolationLastThrottle = baseThrottleTarget
     __CPC.steeringInput = __CPC.Math.clamp((car.steer or 0) /
@@ -32,8 +31,8 @@ return [====[
       __CPC.linearRuntime.throttleInput = __CPC.throttleInput
     end
 
-    -- Base Z and FOV normally share the same throttle geometry, but FOV uses a
-    -- shift-proof blend during gear changes. The first valid cockpit frame is the mathematical origin. If the app starts
+    -- Base Z and FOV share one physical-pedal target and one smoothed blend, so
+    -- both effects leave rest on the same frame. The first valid cockpit frame is the mathematical origin. If the app starts
     -- at 37% throttle, for example, 37% is Z=0 and FOV=startFov; travelling from
     -- there to 100% interpolates exactly to +forwardDistance/fullFov, while
     -- travelling to 0% interpolates exactly to -backDistance/restingFov.
@@ -44,10 +43,10 @@ return [====[
     -- Resting and Full sliders truly adjustable even when the app was enabled at
     -- 0% or 100% throttle.
     local transitionSpeed = math.max(__CPC.settings.throttleTransitionSpeed or 12, 0.20) * overall
-    local fovTransitionSpeed = math.max(__CPC.settings.throttleFovTransitionSpeed or 12, 0.20) * overall
+    local fovTransitionSpeed = transitionSpeed
     local fovMin, fovMax = __CPC.fovHardBounds()
     if not __CPC.cameraStartReady then
-      __CPC.cameraStartThrottleBlend = __CPC.Math.clamp(fovThrottleTarget, 0, 1)
+      __CPC.cameraStartThrottleBlend = __CPC.Math.clamp(baseThrottleTarget, 0, 1)
       __CPC.cameraStartFov = __CPC.Math.clamp(__CPC.originalFov or __CPC.sim.firstPersonCameraFOV
         or __CPC.settings.throttleRestingFov, fovMin, fovMax)
       __CPC.cameraStartRestingFov = __CPC.Math.clamp(__CPC.settings.throttleRestingFov, fovMin, fovMax)
@@ -55,22 +54,19 @@ return [====[
         __CPC.cameraStartRestingFov), fovMin, fovMax)
       __CPC.cameraLiveStartFov = __CPC.cameraStartFov
       __CPC.cameraFovEndpointsLive = false
-      __CPC.fovBlend = __CPC.cameraStartThrottleBlend
-      __CPC.forwardBlend = __CPC.Math.clamp(baseThrottleTarget, 0, 1)
+      __CPC.forwardBlend = __CPC.cameraStartThrottleBlend
+      __CPC.fovBlend = __CPC.forwardBlend
       __CPC.cameraStartReady = true
     else
-      -- Z keeps its existing throttle/gear-filter behavior. FOV follows a separate
-      -- shift-proof blend with its own response speed, so the transmission can
-      -- kick the camera without changing the lens state. Outside a shift both
-      -- targets are identical.
-      __CPC.fovBlend = __CPC.Math.expSmooth(__CPC.fovBlend, fovThrottleTarget, fovTransitionSpeed, dt)
+      -- The real pedal target is shift-proof, so a single blend can drive both
+      -- effects without transmission cuts or auto-blips separating their timing.
       __CPC.forwardBlend = __CPC.Math.expSmooth(__CPC.forwardBlend, baseThrottleTarget, transitionSpeed, dt)
+      __CPC.fovBlend = __CPC.forwardBlend
     end
 
     local syncBlend = __CPC.Math.clamp(__CPC.forwardBlend, 0, 1)
     local startTravel = __CPC.anchoredUnitTravel(syncBlend, __CPC.cameraStartThrottleBlend)
-    local fovSyncBlend = __CPC.Math.clamp(__CPC.fovBlend, 0, 1)
-    local fovStartTravel = __CPC.anchoredUnitTravel(fovSyncBlend, __CPC.cameraStartThrottleBlend)
+    local fovStartTravel = startTravel
     local forwardDistance = __CPC.Math.clamp(__CPC.settings.throttleForwardDistance or 0, 0, 1.00)
     local backDistance = __CPC.Math.clamp(__CPC.settings.throttleBackDistance or 0, 0, 1.00)
     local syncedDistance = startTravel >= 0

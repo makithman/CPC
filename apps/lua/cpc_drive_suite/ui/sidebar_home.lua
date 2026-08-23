@@ -48,9 +48,9 @@ return [====[
   end
 
   function __CPC.drawSidebar()
-    local pages = __CPC.WHEEL_PAGES
-    local availableWidth = ui.availableSpaceX()
-    local sidebarWidth = math.min(320, math.max(290, availableWidth * 0.30))
+    local availableWidth, lowResolution = ui.availableSpaceX(), __CPC.settings.uiLowResolution == true
+    local sidebarWidth = lowResolution and math.min(270, math.max(250, availableWidth * 0.24))
+      or math.min(320, math.max(290, availableWidth * 0.30))
     local sidebarHeight = ui.availableSpaceY()
     ui.childWindow('mainSidebar', vec2(sidebarWidth, sidebarHeight), function()
       ui.drawRectFilled(vec2(0, 0), vec2(sidebarWidth, sidebarHeight),
@@ -61,8 +61,8 @@ return [====[
         ui.Alignment.Center, false, __CPC.Theme.COLOR_TEXT)
       ui.popDWriteFont()
       ui.drawText('MAIN WHEEL', vec2(15, 42), __CPC.Theme.COLOR_MUTED)
-      local previewPage, mainNode = __CPC.drawSettingsNavigationWheel(pages, sidebarWidth)
-      local subwheelY = math.min(470, math.max(360, sidebarHeight - 260))
+      local previewPage, mainNode = __CPC.drawSettingsNavigationWheel(__CPC.WHEEL_PAGES, sidebarWidth)
+      local subwheelY = lowResolution and 360 or math.min(470, math.max(360, sidebarHeight - 260))
       ui.drawText('SUBWHEEL', vec2(15, subwheelY - 104), __CPC.Theme.COLOR_MUTED)
       ui.drawLine(vec2(16, subwheelY - 116), vec2(sidebarWidth - 16, subwheelY - 116),
         rgbm(0.52, 0.56, 0.62, 0.24), 1)
@@ -77,6 +77,10 @@ return [====[
       ui.setCursor(vec2(12, subwheelY + 105 + math.max(0, wheelScale - 1) * 60))
       __CPC.slider('Wheel and subwheel size', 'uiWheelScale', 0.75, 1.25, '%.2fx')
       __CPC.slider('Slider title font size', 'uiSliderLabelScale', 0.75, 1.50, '%.2fx')
+      local resolutionLabel = lowResolution and 'RESTORE LARGE FULL UI' or 'FIT FULL UI TO 1280 x 720'
+      if ui.button(resolutionLabel, vec2(ui.availableSpaceX(), 28)) then
+        __CPC.settings.uiLowResolution = not lowResolution
+      end
     end)
     ui.sameLine(0, 10)
   end

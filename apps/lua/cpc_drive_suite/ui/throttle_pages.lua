@@ -101,9 +101,8 @@ return [====[
       __CPC.settings.throttleRestingFov, fovMax, '%.0f deg')
     __CPC.slider('Move camera forward', 'throttleForwardDistance', 0, 1.00, '%.3f m')
     __CPC.slider('Move camera back', 'throttleBackDistance', 0, 1.00, '%.3f m')
-    __CPC.slider('Camera movement speed', 'throttleTransitionSpeed', 0.20, 30.0, '%.1f')
-    __CPC.slider('View-angle change speed', 'throttleFovTransitionSpeed', 0.20, 30.0, '%.1f',
-      'Sets how quickly the view angle changes, separately from the camera movement above.')
+    __CPC.slider('Camera and FOV movement speed', 'throttleTransitionSpeed', 0.20, 30.0, '%.1f',
+      'Uses one synchronized response so forward movement and FOV begin together.')
 
     ui.separator()
     ui.textColored('STARTING CAMERA POSE', __CPC.accentColor())
@@ -145,6 +144,7 @@ return [====[
     __CPC.settings.throttleForwardSpeed = __CPC.settings.throttleTransitionSpeed
     __CPC.settings.throttleFovWidenSpeed = __CPC.settings.throttleTransitionSpeed
     __CPC.settings.throttleFovReturnSpeed = __CPC.settings.throttleTransitionSpeed
+    __CPC.settings.throttleFovTransitionSpeed = __CPC.settings.throttleTransitionSpeed
   end
 
   function __CPC.drawThrottlePage()

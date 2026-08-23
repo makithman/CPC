@@ -507,6 +507,7 @@
   "throttleYawSwayReverse": false,
   "throttleYawSwaySpeed": 8,
   "uiMode": 1,
+  "uiLowResolution": false,
   "uiPage": 1,
   "uiScale": 0.80000001192092896,
   "uiSliderLabelScale": 1,

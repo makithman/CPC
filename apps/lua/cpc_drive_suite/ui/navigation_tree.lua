@@ -129,6 +129,7 @@ return [====[
 
     local center = centerOverride or vec2(sidebarWidth * 0.5, 460)
     local wheelScale = __CPC.Math.clamp(__CPC.settings.uiWheelScale or 1, 0.75, 1.25)
+      * (__CPC.settings.uiLowResolution and 0.82 or 1)
     local radius = math.min(94, math.max(58, sidebarWidth * 0.16)) * wheelScale
     local accent = __CPC.accentColor()
     local selected = tree.key and __CPC.settings[tree.key]

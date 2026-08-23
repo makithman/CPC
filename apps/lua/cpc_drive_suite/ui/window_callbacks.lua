@@ -113,6 +113,24 @@ return [====[
     end)
   end
 
+  function __CPC.drawLowResolutionChrome()
+    local size, accent = ui.windowSize(), __CPC.accentColor()
+    local state = __CPC.settings.suiteEnabled and 'RUNNING' or 'PAUSED'
+    local themeIndex = __CPC.Math.clamp(math.floor(__CPC.settings.colorTheme + 0.5),
+      1, #__CPC.Theme.THEME_NAMES)
+    ui.drawRectFilled(vec2(0, 0), size, rgbm(0.010, 0.013, 0.019, 0.98))
+    ui.drawRectFilled(vec2(0, 0), vec2(size.x, 4), accent)
+    ui.pushDWriteFont('@System;Weight=Black;Stretch=Condensed')
+    ui.dwriteDrawTextClipped('CPC DRIVE SUITE', 18 * __CPC.settings.uiScale,
+      vec2(12, 7), vec2(size.x - 12, 31), ui.Alignment.Center,
+      ui.Alignment.Center, false, accent)
+    ui.popDWriteFont()
+    ui.dwriteDrawTextClipped(state .. '  |  ' .. __CPC.Theme.THEME_NAMES[themeIndex]
+        .. '  |  1280 x 720 FULL UI', 9, vec2(12, 33), vec2(size.x - 12, 51),
+      ui.Alignment.Center, ui.Alignment.Center, false, __CPC.Theme.COLOR_MUTED)
+    ui.setCursor(vec2(8, 58))
+  end
+
   function __CPC.drawMainWindowContents(dt)
     if __CPC.settings.uiMode == 2 then
       local compactSize = vec2(math.max(220, ui.availableSpaceX()),
@@ -122,7 +140,8 @@ return [====[
       end)
       return
     end
-    __CPC.drawMainChrome()
+    if __CPC.settings.uiLowResolution then __CPC.drawLowResolutionChrome()
+    else __CPC.drawMainChrome() end
     local contentHeight = math.max(120, ui.availableSpaceY() - 5)
     __CPC.drawSidebar()
     local subpageKey, selectedSubpage = __CPC.activeSubpageState()

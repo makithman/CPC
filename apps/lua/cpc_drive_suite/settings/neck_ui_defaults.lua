@@ -176,6 +176,7 @@ return [====[
   neckPage = 1,
   lookPage = 1,
   uiMode = 1,
+  uiLowResolution = false,
   colorTheme = 1,
   uiScale = 1.0,
   uiWheelScale = 1.0,
